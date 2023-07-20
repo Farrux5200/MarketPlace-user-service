@@ -26,11 +26,19 @@ ext {
 }
 
 dependencies {
+
+
+    implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.7' // swagger
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
+
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     implementation 'org.springframework.cloud:spring-cloud-config-client:4.0.1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
     compileOnly 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

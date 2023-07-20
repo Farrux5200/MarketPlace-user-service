@@ -9,3 +9,13 @@ spring:
       label: develop
   config:
     import: optional:configserver:http://localhost:9999/
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9761/eureka
+  instance:
+    preferIpAddress: true
+
+
+
