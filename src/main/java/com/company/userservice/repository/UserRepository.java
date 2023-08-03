@@ -8,5 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
- Optional<User> findByUserIdAndDeleteAtIsNull(Integer userId);
+    Optional<User> findByUserIdAndDeleteAtIsNull(Integer userId);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+
 }

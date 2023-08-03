@@ -1,8 +1,9 @@
 package com.company.userservice.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = ("users"))
 public class User {
     @Column(name = "user_id")
@@ -34,7 +38,9 @@ public class User {
     private LocalDate birthDate;
     private LocalDate workingDate;
     private LocalDate workingDays;
+    @CreationTimestamp
     private LocalDateTime createAt;
+    @UpdateTimestamp
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
 }

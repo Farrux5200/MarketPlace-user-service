@@ -21,7 +21,6 @@ public class EmployeeService {
     public ResponseDto<EmployeeDto> create(EmployeeDto dto) {
         try {
             Employee employee=employeeMapper.toEntity(dto);
-            employee.setCreateAt(LocalDateTime.now());
             employeeRepository.save(employee);
             return ResponseDto.<EmployeeDto>builder()
                     .code(0)
@@ -40,7 +39,6 @@ public class EmployeeService {
     public ResponseDto<EmployeeDto> get(Integer employeeId) {
         return this.employeeRepository.findByEmployeesIdAndDeleteAtIsNull(employeeId)
                 .map(employee -> ResponseDto.<EmployeeDto>builder()
-                        .code(0)
                         .message("Employee successful get method!")
                         .success(true)
                         .data(this.employeeMapper.toDto(employee))
@@ -54,12 +52,10 @@ public class EmployeeService {
         try {
             return this.employeeRepository.findByEmployeesIdAndDeleteAtIsNull(employeeId)
                     .map(employee -> {
-                        employee.setUpdateAt(LocalDateTime.now());
                         employeeMapper.update(employee, dto);
                         employeeRepository.save(employee);
                         return ResponseDto.<EmployeeDto>builder()
                                 .success(true)
-                                .code(0)
                                 .message("Employee successful update!")
                                 .data(this.employeeMapper.toDtoByNotUsers(employee))
                                 .build();
@@ -85,8 +81,7 @@ public class EmployeeService {
                         employeeRepository.save(employee);
                         return ResponseDto.<EmployeeDto>builder()
                                 .success(true)
-                                .code(0)
-                                .message("Employee successful update!")
+                                .message("Employee successful delete!")
                                 .data(this.employeeMapper.toDtoByNotUsers(employee))
                                 .build();
                     })
@@ -105,10 +100,11 @@ public class EmployeeService {
 
     public ResponseDto<List<EmployeeDto>> getAll() {
         return ResponseDto.<List<EmployeeDto>>builder()
-                .code(0)
                 .success(true)
                 .message("Employee getAll method successful!")
-                .data(employeeRepository.findAll().stream().map(employeeMapper::toDto).toList())
+                .data(employeeRepository.findAll()
+                        .stream()
+                        .map(employeeMapper::toDto).toList())
                 .build();
     }
 }
