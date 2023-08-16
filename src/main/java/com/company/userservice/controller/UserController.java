@@ -1,5 +1,6 @@
 package com.company.userservice.controller;
 
+import com.company.userservice.client.service.FileClient;
 import com.company.userservice.dto.ResponseDto;
 import com.company.userservice.dto.UserDto;
 import com.company.userservice.service.UserService;

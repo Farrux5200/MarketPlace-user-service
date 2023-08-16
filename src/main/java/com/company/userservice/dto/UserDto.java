@@ -1,5 +1,7 @@
 package com.company.userservice.dto;
 
+import com.company.userservice.client.dto.FileModelDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private Integer userId;
 
@@ -25,6 +28,8 @@ public class UserDto {
     private String firstAddress;
     private String secondAddress;
     private Double monthlyPrice;
+
+    private FileModelDto file;
 
     private LocalDate birthDate;
     private LocalDate workingDate;

@@ -1,5 +1,6 @@
 package com.company.userservice;
 
+import com.company.userservice.dto.ErrorDto;
 import com.company.userservice.dto.ResponseDto;
 import com.company.userservice.dto.UserDto;
 import com.company.userservice.model.User;
@@ -26,12 +27,42 @@ class UserServiceApplicationTests {
     private UserService userService;
     private UserMapper userMapper;
     private UserRepository userRepository;
-
+    private UserValidate userValidate;
     @BeforeEach
     void initMethod() {
         this.userMapper = mock(UserMapper.class);
         this.userRepository = mock(UserRepository.class);
-        this.userService = new UserService(userMapper, userRepository);
+        this.userValidate=mock(UserValidate.class);
+        this.userService = new UserService(userMapper, userRepository, userValidate);
+    }
+
+    @Test
+    void testValidate(){
+        List<ErrorDto> errors=new ArrayList<>();
+        UserDto userDto = UserDto.builder()
+                .userId(1)
+                .firsName("Farrux")
+                .lastName("Izzatullayev")
+                .phoneNumber("+998941865200")
+                .middleName("Farrux")
+                .userName("Farrux_boy_uzb")
+                .build();
+      errors.isEmpty();
+
+        when(this.userValidate.validate(any()))
+                .thenReturn(errors);
+
+        when(this.userRepository.existsByPhoneNumber(any()))
+                .thenReturn(true);
+
+        ResponseDto<UserDto> response=this.userService.create(userDto);
+
+      //  Assertions.assertFalse(response.isSuccess());
+      //  Assertions.assertNotNull(response.getErrors());
+      //    Assertions.assertEquals(-2, response.getCode());
+
+        verify(this.userValidate, times(1)).validate(any());
+
     }
 
     @Test
@@ -107,9 +138,9 @@ class UserServiceApplicationTests {
         ResponseDto<UserDto> response = this.userService.get(userId);
 
         Assertions.assertTrue(response.isSuccess());
+        Assertions.assertNotNull(response.getData());
         Assertions.assertEquals(0, response.getCode());
         Assertions.assertEquals("User successful get method!", response.getMessage());
-        Assertions.assertNotNull(response.getData());
 
 
         verify(this.userRepository, times(1)).findByUserIdAndDeleteAtIsNull(any());

@@ -19,17 +19,17 @@ import java.util.List;
 public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-   // private final UserValidate userValidate;
+    private final UserValidate userValidate;
 
     public ResponseDto<UserDto> create(UserDto dto) {
-       /* List<ErrorDto> errors = this.userValidate.validate(dto);
+        List<ErrorDto> errors = this.userValidate.validate(dto);
         if (!errors.isEmpty()) {
             return ResponseDto.<UserDto>builder()
                     .code(-2)
                     .message("Validate error ")
                     .errors(errors)
                     .build();
-        }*/
+        }
 
         try {
             User user = this.userMapper.toEntity(dto);
@@ -52,7 +52,7 @@ public class UserService {
                 .map(user -> ResponseDto.<UserDto>builder()
                         .success(true)
                         .message("User successful get method!")
-                        .data(this.userMapper.toDto(user))
+                        .data(this.userMapper.toDtoWithFile(user))
                         .build())
                 .orElse(ResponseDto.<UserDto>builder()
                         .code(-1)
@@ -114,7 +114,7 @@ public class UserService {
         return ResponseDto.<List<UserDto>>builder()
                 .success(true)
                 .message("User getAll method successful!")
-                .data(this.userRepository.findAll().stream().map(userMapper::toDto).toList())
+                .data(this.userRepository.findAll().stream().map(userMapper::toDtoWithFile).toList())
                 .build();
     }
 }
